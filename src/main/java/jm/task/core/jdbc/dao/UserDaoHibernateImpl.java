@@ -21,7 +21,7 @@ public class UserDaoHibernateImpl implements UserDao {
         Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
         try {
-            session.createSQLQuery("CREATE TABLE IF NOT EXISTS hibernate" +
+            session.createNativeQuery("CREATE TABLE IF NOT EXISTS hibernate" +
                     " (id mediumint not null auto_increment, name VARCHAR(50), " +
                     "lastname VARCHAR(50), " +
                     "age tinyint, " +
@@ -43,7 +43,7 @@ public class UserDaoHibernateImpl implements UserDao {
         Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
         try {
-            session.createSQLQuery("DROP TABLE IF EXISTS hibernate").executeUpdate();
+            session.createNativeQuery("DROP TABLE IF EXISTS hibernate").executeUpdate();
             transaction.commit();
             System.out.println("Таблица удалена");
         } catch (HibernateException e) {
@@ -114,15 +114,10 @@ public class UserDaoHibernateImpl implements UserDao {
     @Override
     public void cleanUsersTable() {
         Session session = sessionFactory.openSession();
-        CriteriaQuery<User> criteriaQuery = session.getCriteriaBuilder().createQuery(User.class);
-        criteriaQuery.from(User.class);
         Transaction transaction = session.beginTransaction();
         try {
-            List<User> instances = session.createQuery(criteriaQuery).getResultList();
-            for (Object o : instances) {
-                session.delete(o);
-            }
-            session.getTransaction().commit();
+            session.createNativeQuery("TRUNCATE TABLE hibernate;").executeUpdate();
+            transaction.commit();
             System.out.println("Таблица очищена");
         } catch (HibernateException e) {
             e.printStackTrace();
