@@ -1,6 +1,7 @@
 package jm.task.core.jdbc.util;
 
 import jm.task.core.jdbc.model.User;
+import org.hibernate.HibernateException;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
@@ -27,14 +28,9 @@ public class Util {
             ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
                     .applySettings(configuration.getProperties()).build();
             sessionFactory = configuration.buildSessionFactory(serviceRegistry);
-        } catch (Throwable e) {
+        } catch (HibernateException e) {
             e.printStackTrace();
         }
         return sessionFactory;
-    }
-
-    public static void closeConnection() {
-        if (sessionFactory != null)
-            sessionFactory.close();
     }
 }
