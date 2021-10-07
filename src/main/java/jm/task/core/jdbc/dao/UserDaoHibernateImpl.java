@@ -43,11 +43,14 @@ public class UserDaoHibernateImpl implements UserDao {
         Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
         try {
-            session.createSQLQuery("Drop table if exists hibernate").executeUpdate();
+            session.createSQLQuery("DROP TABLE IF EXISTS hibernate").executeUpdate();
             transaction.commit();
             System.out.println("Таблица удалена");
         } catch (HibernateException e) {
+            e.printStackTrace();
+            if (transaction != null) {
                 transaction.rollback();
+            }
         } finally {
             session.close();
         }
