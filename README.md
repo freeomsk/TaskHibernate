@@ -1,4 +1,4 @@
-## JM preproject. Practical task 1.1.4 (Hibernate)
+## Spring + Hibernate
 
 В этом задании мы познакомимся с фреймворком Hibernate и научимся взаимодействовать с помощью него с базой данных.
 
